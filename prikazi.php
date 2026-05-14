@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('GMT+2');
+date_default_timezone_set('Europe/Sarajevo');
 
 include 'config.php';
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -13,6 +13,7 @@ $result = $conn->query("SELECT * FROM korisnici ORDER BY datum_unosa DESC");
 <!DOCTYPE html>
 <html lang="bs">
 <head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
     <meta charset="UTF-8">
     <title>Popis korisnika</title>
     <style>
@@ -258,7 +259,7 @@ $result = $conn->query("SELECT * FROM korisnici ORDER BY datum_unosa DESC");
                     <div class="count">
                         📊 Ukupno korisnika: <span><?php echo $result->num_rows; ?></span>
                     </div>
-                    <a href="unos.html" class="btn btn-primary">➕ Unesi novog korisnika</a>
+                    <a href="unos.php" class="btn btn-primary">➕ Unesi novog korisnika</a>
                 </div>
                 
                 <div style="overflow-x: auto;">
@@ -299,13 +300,14 @@ $result = $conn->query("SELECT * FROM korisnici ORDER BY datum_unosa DESC");
             <?php else: ?>
                 <div class="empty">
                     📭 Trenutno nema korisnika u bazi.<br><br>
-                    <a href="unos.html" class="btn btn-primary">➕ Unesi prvog korisnika</a>
+                    <a href="unos.php" class="btn btn-primary">➕ Unesi prvog korisnika</a>
                 </div>
             <?php endif; ?>
-            
-            <div class="back-link">
-                <a href="index.php">← Povratak na početnu stranicu</a>
-            </div>
+           <div style="text-align: center; margin-top: 25px;">
+    <a href="index.php" class="btn btn-primary" style="display: inline-block; background: #667eea; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px;">🏠 Povratak na početnu</a>
+</div>            
+
+
         </div>
     </div>
 </body>

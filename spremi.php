@@ -11,7 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ime = $_POST['ime'];
     $email = $_POST['email'];
     $odjel = $_POST['odjel'];
-    $datum_zaposlenja = $_POST['datum_zaposlenja'];
+    $dan = $_POST['dan'];
+    $mjesec = $_POST['mjesec'];
+    $godina = $_POST['godina'];
+    $datum_zaposlenja = "$godina-$mjesec-$dan";
     
     $sql = "INSERT INTO korisnici (ime, email, odjel, datum_zaposlenja) VALUES ('$ime', '$email', '$odjel', '$datum_zaposlenja')";
     
@@ -20,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <head>
         <meta charset='UTF-8'>
         <title>Rezultat unosa</title>
+        <link rel='icon' href=\"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>\">
         <style>
             * {
                 margin: 0;
@@ -41,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 background: white;
                 border-radius: 20px;
                 box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                max-width: 500px;
+                max-width: 550px;
                 width: 100%;
                 padding: 40px;
                 text-align: center;
@@ -73,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             h2 {
                 color: #2c3e50;
-                margin-bottom: 10px;
+                margin-bottom: 20px;
                 font-size: 28px;
             }
             
@@ -101,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 gap: 15px;
                 justify-content: center;
                 flex-wrap: wrap;
+                margin-bottom: 15px;
             }
             
             .btn {
@@ -111,7 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 transition: all 0.3s ease;
                 display: inline-block;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                font-size: 16px;
+                font-size: 14px;
+                cursor: pointer;
+                border: none;
             }
             
             .btn-primary {
@@ -136,8 +143,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 box-shadow: 0 5px 15px rgba(72,187,120,0.3);
             }
             
+            .btn-home {
+                background: #667eea;
+                color: white;
+            }
+            
+            .btn-home:hover {
+                background: #5a67d8;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+            }
+            
             .error-text {
                 color: #f56565;
+                margin-top: 15px;
             }
         </style>
     </head>
@@ -162,6 +181,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href='unos.html' class='btn btn-primary'>📝 Unesi novog korisnika</a>
                 <a href='prikazi.php' class='btn btn-secondary'>📋 Prikaži sve korisnike</a>
             </div>
+            <div class='buttons'>
+                <a href='index.php' class='btn btn-home'>🏠 Povratak na početnu</a>
+            </div>
         </div>";
     } else {
         echo "
@@ -177,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class='buttons'>
                 <a href='unos.html' class='btn btn-primary'>← Pokušaj ponovo</a>
+                <a href='index.php' class='btn btn-home'>🏠 Povratak na početnu</a>
             </div>
         </div>";
     }

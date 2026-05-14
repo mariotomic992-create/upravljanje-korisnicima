@@ -1,8 +1,26 @@
+<?php
+session_start();
+include 'config.php';
+
+// Broj korisnika iz baze (samo ako je prijavljen)
+$broj_korisnika = 0;
+if (isset($_SESSION['prijavljen']) && $_SESSION['prijavljen'] === true) {
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if (!$conn->connect_error) {
+        $result = $conn->query("SELECT COUNT(*) as ukupno FROM korisnici");
+        if ($result && $row = $result->fetch_assoc()) {
+            $broj_korisnika = $row['ukupno'];
+        }
+        $conn->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="bs">
 <head>
     <meta charset="UTF-8">
-    <title>Linux</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'> 📊</text></svg>">
+    <title>Upravljanje korisnicima</title>
     <style>
         * {
             margin: 0;
@@ -76,7 +94,6 @@
             text-align: center;
         }
         
-        /* Centriranje tabele sa podacima */
         .info-wrapper {
             display: flex;
             justify-content: center;
@@ -119,11 +136,26 @@
             font-weight: bold;
         }
         
+        .user-count {
+            background: #e8f0fe;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .user-count span {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
         .buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 15px;
         }
         
         .btn {
@@ -159,6 +191,18 @@
             box-shadow: 0 5px 15px rgba(72,187,120,0.3);
         }
         
+        .btn-logout {
+            background: #f56565;
+            color: white;
+            border: none;
+        }
+        
+        .btn-logout:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245,101,101,0.3);
+        }
+        
         @media (max-width: 500px) {
             .info-label {
                 white-space: normal;
@@ -166,15 +210,15 @@
             }
         }
     </style>
-       </head>
-       <body>
-       <div class="container">
+</head>
+<body>
+    <div class="container">
         <div class="icon">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
             </svg>
         </div>
-        <h1>Dobrodošli u  bazu podataka</h1>
+        <h1>Upravljanje bazom korisnika</h1>
         <div class="subtitle">Server informacije i status</div>
         
         <div class="info-card">
@@ -190,12 +234,8 @@
                         <span class="info-value"><?php echo date('d.m.Y H:i:s'); ?></span>
                     </div>
                     <div class="info-row">
-                         <span class="info-label">🖧 IP adresa servera:</span>
-                         <span class="info-value"><?php echo $_SERVER['SERVER_ADDR']; ?></span> 
-                    </div>
-                    <div class="info-row">
-                         <span class="info-label">🌍 Javna IP adresa:</span>
-                         <span class="info-value"><?php echo file_get_contents('https://api.ipify.org'); ?></span> 
+                        <span class="info-label">🌍 IP adresa servera:</span>
+                        <span class="info-value"><?php echo $_SERVER['SERVER_ADDR']; ?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">🌐 Web server:</span>
@@ -204,9 +244,7 @@
                     <div class="info-row">
                         <span class="info-label">🐘 PHP status:</span>
                         <span class="info-value">
-
                             <?php 
-                             date_default_timezone_set('Europe/Sarajevo');
                             if (function_exists('mysqli_connect')) {
                                 echo '<span class="status">✅ MySQL podrška aktivna</span>';
                             } else {
@@ -215,18 +253,30 @@
                             ?>
                         </span>
                     </div>
-                    <div class="info-row">
-                        <span class="info-label">📁 PHP verzija:</span>
-                        <span class="info-value"><?php echo phpversion(); ?></span>
-                    </div>
                 </div>
             </div>
+            
+            <?php if (isset($_SESSION['prijavljen']) && $_SESSION['prijavljen'] === true): ?>
+                <div class="user-count">
+                    👥 Broj korisnika u bazi: <span><?php echo $broj_korisnika; ?></span>
+                </div>
+            <?php endif; ?>
         </div>
         
         <div class="buttons">
-            <a href="login.php" class="btn btn-primary">👥 Spoji se na bazu korisnika</a>
-           
+            <?php if (isset($_SESSION['prijavljen']) && $_SESSION['prijavljen'] === true): ?>
+                <a href="unos.php" class="btn btn-primary">👥 Unesi novog korisnika</a>
+                <a href="prikazi.php" class="btn btn-secondary">📋 Pregledaj korisnike</a>
+            <?php else: ?>
+                <a href="login.php" class="btn btn-primary">👥 Spoji se na bazu korisnika</a>
+            <?php endif; ?>
         </div>
+        
+        <?php if (isset($_SESSION['prijavljen']) && $_SESSION['prijavljen'] === true): ?>
+            <div style="text-align: center;">
+                <a href="logout.php" class="btn btn-logout">🚪 Odjavi se</a>
+            </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>

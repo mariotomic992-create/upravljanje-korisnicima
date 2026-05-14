@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="bs">
 <head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'> 📊</text></svg>">
     <meta charset="UTF-8">
     <title>Unos korisnika</title>
     <style>
@@ -169,10 +170,32 @@
                 <label for="odjel">🏢 Odjel </label>
                 <input type="text" id="odjel" name="odjel" required placeholder="npr. IT, Računovodstvo, Marketing...">
                 </div>
-            <div class="form-group">
-                <label for="datum_zaposlenja">📅 Datum zaposlenja</label>
-                <input type="date" id="datum_zaposlenja" name="datum_zaposlenja" required>
-            </div>            
+ 
+           <div class="form-group">
+    <label>📅 Datum zaposlenja (dan.mjesec.godina)</label>
+    <div style="display: flex; gap: 10px;">
+        <select id="dan" name="dan" required style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+            <option value="">Dan</option>
+            <?php for($i=1;$i<=31;$i++): ?>
+                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+            <?php endfor; ?>
+        </select>
+        <select id="mjesec" name="mjesec" required style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+            <option value="">Mjesec</option>
+            <?php for($i=1;$i<=12;$i++): ?>
+                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+            <?php endfor; ?>
+        </select>
+        
+        <select name="godina" required style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+    <option value="">Godina</option>
+    <?php for($i=1970; $i<=2030; $i++): ?>
+        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+    <?php endfor; ?>
+</select>
+    </div>
+</div>
+              
             <div class="buttons">
                 <button type="submit" class="btn btn-primary">💾 Spremi u bazu</button>
                 <a href="prikazi.php" class="btn btn-secondary">📋 Prikaži sve korisnike</a>

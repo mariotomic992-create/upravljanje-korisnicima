@@ -1,7 +1,13 @@
 <?php
+session_start(); // Pokreni sesiju
+
+// Ako je već prijavljen, preusmjeri na unos.html
+if (isset($_SESSION['prijavljen']) && $_SESSION['prijavljen'] === true) {
+    header('Location: unos.php');
+    exit;
+}
+
 include 'config.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 $greska = '';
 
@@ -13,20 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $conn = new mysqli($db_host, $username, $password, $db_name);
         
         if ($conn->connect_error) {
-            $greska = '❌ Neispravano korisničko ime ili lozinka!';
+            $greska = '❌ Neispravan username ili password!';
         } else {
+            // Uspješna prijava – spremi u sesiju
+            $_SESSION['prijavljen'] = true;
+            $_SESSION['username'] = $username;
             $conn->close();
-            header('Location: unos.html');
+            header('Location: unos.php');
             exit;
         }
     } catch (Exception $e) {
-        $greska = '❌ Neispravano korisničko ime ili lozinka!';
+        $greska = '❌ Neispravan username ili password!';
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="bs">
 <head>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'> 📊</text></svg>">
     <meta charset="UTF-8">
     <title>Prijava na bazu</title>
     <style>
@@ -173,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST" autocomplete="off">
             <div class="form-group">
                 <label for="username">👤 Korisničko ime (MySQL)</label>
-                <input type="text" id="username" name="username" required placeholder="Unesite korisničko ime.">
+                <input type="text" id="username" name="username" required placeholder="Unesite korisničko ime">
             </div>
             
             <div class="form-group">
@@ -184,7 +194,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit" class="btn btn-primary">🔌 Spoji se na bazu</button>
         </form>
         
-        <div style="margin-top: 10px;">
+        
+        <div style="margin-top: 25px;">
             <a href="index.php" class="btn btn-outline">← Povratak na početnu</a>
         </div>
     </div>

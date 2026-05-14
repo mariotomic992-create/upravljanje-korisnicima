@@ -2,7 +2,7 @@
 <html lang="bs">
 <head>
     <meta charset="UTF-8">
-    <title>Moj prvi Linux server</title>
+    <title>Linux</title>
     <style>
         * {
             margin: 0;

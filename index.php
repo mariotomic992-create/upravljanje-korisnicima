@@ -190,6 +190,14 @@
                         <span class="info-value"><?php echo date('d.m.Y H:i:s'); ?></span>
                     </div>
                     <div class="info-row">
+                         <span class="info-label">🖧 IP adresa servera:</span>
+                         <span class="info-value"><?php echo $_SERVER['SERVER_ADDR']; ?></span> 
+                    </div>
+                    <div class="info-row">
+                         <span class="info-label">🌍 Javna IP adresa:</span>
+                         <span class="info-value"><?php echo file_get_contents('https://api.ipify.org'); ?></span> 
+                    </div>
+                    <div class="info-row">
                         <span class="info-label">🌐 Web server:</span>
                         <span class="info-value">Nginx</span>
                     </div>
@@ -206,10 +214,6 @@
                             }
                             ?>
                         </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">💻 OS:</span>
-                        <span class="info-value"><?php echo php_uname('s'); ?> <?php echo php_uname('r'); ?></span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">📁 PHP verzija:</span>

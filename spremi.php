@@ -1,12 +1,7 @@
 <?php
-date_default_timezone_set('GMT+2');
+include 'config.php';
 
-$host = 'localhost';
-$user = 'mario';
-$pass = 'cornet123';
-$db = 'mojsajt_db';
-
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 if ($conn->connect_error) {
     die("Greška spajanja: " . $conn->connect_error);
@@ -15,8 +10,10 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ime = $_POST['ime'];
     $email = $_POST['email'];
+    $odjel = $_POST['odjel'];
+    $datum_zaposlenja = $_POST['datum_zaposlenja'];
     
-    $sql = "INSERT INTO korisnici (ime, email) VALUES ('$ime', '$email')";
+    $sql = "INSERT INTO korisnici (ime, email, odjel, datum_zaposlenja) VALUES ('$ime', '$email', '$odjel', '$datum_zaposlenja')";
     
     echo "<!DOCTYPE html>
     <html lang='bs'>
@@ -80,12 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 font-size: 28px;
             }
             
-            .subtitle {
-                color: #7f8c8d;
-                margin-bottom: 30px;
-                font-size: 16px;
-            }
-            
             .user-info {
                 background: #f8f9fa;
                 border-radius: 12px;
@@ -145,21 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 box-shadow: 0 5px 15px rgba(72,187,120,0.3);
             }
             
-            .btn-outline {
-                background: transparent;
-                color: #667eea;
-                border: 2px solid #667eea;
-            }
-            
-            .btn-outline:hover {
-                background: #667eea;
-                color: white;
-                transform: translateY(-2px);
-            }
-            
             .error-text {
                 color: #f56565;
-                margin-top: 15px;
             }
         </style>
     </head>
@@ -177,6 +155,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class='user-info'>
                 <p><strong>👤 Ime i prezime:</strong> " . htmlspecialchars($ime) . "</p>
                 <p><strong>📧 Email adresa:</strong> " . htmlspecialchars($email) . "</p>
+                <p><strong>🏢 Odjel:</strong> " . htmlspecialchars($odjel) . "</p>
+                <p><strong>📅 Datum zaposlenja:</strong> " . date('d.m.Y', strtotime($datum_zaposlenja)) . "</p>
             </div>
             <div class='buttons'>
                 <a href='unos.html' class='btn btn-primary'>📝 Unesi novog korisnika</a>

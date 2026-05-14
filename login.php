@@ -1,4 +1,5 @@
 <?php
+include 'config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -8,22 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
     
-    // Pokušaj spojiti – ako baci izuzetak (exception), uhvati ga
     try {
-        $conn = new mysqli('localhost', $username, $password, 'mojsajt_db');
+        $conn = new mysqli($db_host, $username, $password, $db_name);
         
-        // Ako je došlo do greške (npr. pogrešan password)
         if ($conn->connect_error) {
-            $greska = '❌ Neispravan username ili password!';
+            $greska = '❌ Neispravano korisničko ime ili lozinka!';
         } else {
-            // Uspješno spojeno
             $conn->close();
             header('Location: unos.html');
             exit;
         }
     } catch (Exception $e) {
-        // Ovo će se izvršiti ako new mysqli baci izuzetak
-        $greska = '❌ Neispravan username ili password!';
+        $greska = '❌ Neispravano korisničko ime ili lozinka!';
     }
 }
 ?>
@@ -176,22 +173,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST" autocomplete="off">
             <div class="form-group">
                 <label for="username">👤 Korisničko ime (MySQL)</label>
-                <input type="text" id="username" name="username" required placeholder="mario">
+                <input type="text" id="username" name="username" required placeholder="Unesite korisničko ime.">
             </div>
             
             <div class="form-group">
                 <label for="password">🔒 Lozinka</label>
-                <input type="password" id="password" name="password" required placeholder="cornet123">
+                <input type="password" id="password" name="password" required placeholder="Unesite lozinku">
             </div>
             
             <button type="submit" class="btn btn-primary">🔌 Spoji se na bazu</button>
         </form>
         
-        <div class="info-text">
-            💡 Podrazumijevani podaci: <code>mario</code> / <code>cornet123</code>
-        </div>
-        
-        <div style="margin-top: 25px;">
+        <div style="margin-top: 10px;">
             <a href="index.php" class="btn btn-outline">← Povratak na početnu</a>
         </div>
     </div>

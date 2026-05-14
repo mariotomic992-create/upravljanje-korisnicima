@@ -1,13 +1,8 @@
 <?php
 date_default_timezone_set('GMT+2');
 
-$host = 'localhost';
-$user = 'mario';
-$pass = 'cornet123';
-$db = 'mojsajt_db';
-
-$conn = new mysqli($host, $user, $pass, $db);
-
+include 'config.php';
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) {
     die("Greška spajanja na bazu: " . $conn->connect_error);
 }
@@ -273,6 +268,8 @@ $result = $conn->query("SELECT * FROM korisnici ORDER BY datum_unosa DESC");
                                 <th>ID</th>
                                 <th>Ime i prezime</th>
                                 <th>Email adresa</th>
+                                <th>Odjel </th>
+                                <th>Datum zaposlenja</th>
                                 <th>Datum unosa</th>
                                 <th>Akcija</th>
                             </tr>
@@ -283,7 +280,10 @@ $result = $conn->query("SELECT * FROM korisnici ORDER BY datum_unosa DESC");
                                 <td><?php echo $row['id']; ?></td>
                                 <td><?php echo htmlspecialchars($row['ime']); ?></td>
                                 <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                <td><?php echo $row['datum_unosa']; ?></td>
+                                <td><?php echo htmlspecialchars($row['odjel']); ?></td>
+                                <td><?php echo date('d.m.Y', strtotime($row['datum_zaposlenja'])); ?></td>
+                                <td><?php echo date('d.m.Y H:i:s', strtotime($row['datum_unosa'])); ?></td>
+                                 
                                 <td>
                                     <a href="brisanje.php?id=<?php echo $row['id']; ?>" 
                                        class="btn btn-danger" 

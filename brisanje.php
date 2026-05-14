@@ -1,10 +1,7 @@
 <?php
-$host = 'localhost';
-$user = 'mario';
-$pass = 'cornet123';
-$db = 'mojsajt_db';
+include 'config.php';
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-$conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
     die("Greška spajanja: " . $conn->connect_error);
